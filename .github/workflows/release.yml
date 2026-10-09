@@ -74,3 +74,13 @@ jobs:
           # even though the job checks out the tag — so the signature names a
           # different source commit than the artifact was built from.
           gh workflow run publish.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG" -f tag="$TAG"
+
+      - name: Publish the Docker image via docker-publish.yml
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          echo "Dispatching docker-publish.yml for $TAG"
+          gh workflow run docker-publish.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG" -f tag="$TAG"

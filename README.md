@@ -66,6 +66,16 @@ Or install directly from npm:
 npx plex-mcp-server
 ```
 
+Or run the container image (`linux/amd64` and `linux/arm64`), which serves MCP over HTTP at `http://<host>:3000/mcp`:
+```bash
+docker run -d --name plex-mcp -p 3000:3000 \
+  -e PLEX_URL=http://your-plex-host:32400 \
+  -e PLEX_TOKEN=your_plex_token_here \
+  ghcr.io/niavasha/plex-mcp-server:latest
+```
+
+Images are tagged with each release version (e.g. `1.6.0`) and `latest`. The HTTP endpoint has no authentication, so don't expose it beyond networks you trust.
+
 ### Configuration
 
 1. **Get your Plex token** (see [instructions below](#getting-your-plex-token))
